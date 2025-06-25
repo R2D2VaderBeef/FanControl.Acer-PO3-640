@@ -45,4 +45,9 @@
   <ItemGroup>
     <None Include="EmbeddedController.LICENSE" />
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="WinRing0x64.sys">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
 </Project>

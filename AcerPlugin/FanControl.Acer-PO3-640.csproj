@@ -21,10 +21,5 @@
 			<HintPath>lib\FanControl.Plugins.dll</HintPath>
 		</Reference>
 	</ItemGroup>
-	<ItemGroup>
-	  <None Update="lib\WinRing0x64.sys">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	</ItemGroup>
 
 </Project>
