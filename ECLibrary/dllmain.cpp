@@ -10,6 +10,7 @@ extern "C" BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPV
     {
     case DLL_PROCESS_ATTACH:
         ec = EmbeddedController();
+        ec.endianness = BIG_ENDIAN;
         if (ec.driverFileExist && ec.driverLoaded) {
             return TRUE;
         }
@@ -27,3 +28,14 @@ extern "C" BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPV
     return TRUE;
 }
 
+extern "C" WORD ReadWord(BYTE _register) {
+    return ec.readWord(_register);
+}
+
+extern "C" BYTE WriteWord(BYTE _register, WORD _value) {
+    bool result = ec.writeWord(_register, _value);
+    if (result == true) {
+        return 0x01;
+    }
+    else return 0x00;
+}
