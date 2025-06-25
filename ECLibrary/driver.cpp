@@ -361,7 +361,7 @@ BYTE Driver::driverFileExistence()
 	GetModuleFileName(NULL, dir, MAX_PATH);
 	if ((ptr = _tcsrchr(dir, '\\')) != NULL)
 		*ptr = '\0';
-	wsprintf(gDriverPath, _T("%s\\%s"), dir, gDriverFileName);
+	wsprintf(gDriverPath, _T("%s\\%s"), dir, _T("Plugins\\Acer-PO3-640"), gDriverFileName);
 
 	// Check file existence
 	hFile = FindFirstFile(gDriverPath, &findData);
