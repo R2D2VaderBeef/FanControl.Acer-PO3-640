@@ -22,9 +22,6 @@
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="lib\ECLibrary.dll">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
 	  <None Update="lib\WinRing0x64.sys">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
