@@ -5,6 +5,15 @@
 		<RootNamespace>FanControl.Acer_PO3_640</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DebugType>embedded</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <DebugType>embedded</DebugType>
 	</PropertyGroup>
 	<ItemGroup>
 		<Reference Include="FanControl.Plugins, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -13,7 +22,7 @@
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="lib\EmbeddedController.dll">
+	  <None Update="lib\ECLibrary.dll">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	  <None Update="lib\WinRing0x64.sys">
