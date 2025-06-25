@@ -1,7 +1,4 @@
 ﻿using FanControl.Plugins;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security.Principal;
@@ -9,18 +6,31 @@ using System.Security.Principal;
 namespace FanControl.Acer_PO3_640
 {
     [SupportedOSPlatform("windows")]
-    public partial class AcerPlugin : IPlugin2
+    public partial class AcerPlugin : IPlugin
     {
         [LibraryImport("ECLibrary.dll")]
-        private static partial ushort ReadWord(byte _register);
-        
+        private static partial void Setup();
+
         [LibraryImport("ECLibrary.dll")]
-        private static partial byte WriteWord(byte _register, ushort _value);
+        private static partial void Shutdown();
 
         public string Name => "Acer-PO3-640";
         private readonly IPluginDialog dialog;
         private readonly IPluginLogger logger;
         private bool failed = false;
+
+        private FanSpeedSensor[] speedSensors =
+        {
+            new FanSpeedSensor("acer-po3-640-cpu-speed", "CPU Fan Speed", 0x14),
+            new FanSpeedSensor("acer-po3-640-front-speed", "Front Case Fan Speed", 0x16),
+            new FanSpeedSensor("acer-po3-640-back-speed", "Back Case Fan Speed", 0x1A)
+        };
+        private FanControlSensor[] ctrlSensors =
+        {
+            new FanControlSensor("acer-po3-640-cpu-control", "CPU Fan", 0xF0, 500, 2000),
+            new FanControlSensor("acer-po3-640-front-control", "Front Case Fan", 0xF2, 600, 3400),
+            new FanControlSensor("acer-po3-640-back-control", "Back Case Fan", 0xF6, 800, 3400)
+        };
 
         public AcerPlugin(IPluginLogger logger, IPluginDialog dialog)
         {
@@ -36,7 +46,8 @@ namespace FanControl.Acer_PO3_640
             if (principal.IsInRole(WindowsBuiltInRole.Administrator))
             {
                 logger.Log("[Acer-PO3-640][Debug] Administrator permission confirmed");
-                Marshal.PrelinkAll(typeof(AcerPlugin));
+                NativeLibrary.Load(Path.Combine(Directory.GetCurrentDirectory(), "Plugins\\Acer-PO3-640\\ECLibrary.dll"));
+                Setup();
             }
             else
             {
@@ -48,20 +59,20 @@ namespace FanControl.Acer_PO3_640
         public void Load(IPluginSensorsContainer container)
         {
             if (failed == true) return;
-            container.FanSensors.Add(new FakeSensor("po3-640-cpu", "CPU Fan", 2500));
-            container.TempSensors.Add(new FakeSensor("po3-640-faketemp", "Fake Temperature", 2500));
+
+            container.FanSensors.AddRange(speedSensors);
+            container.ControlSensors.AddRange(ctrlSensors);
+
             logger.Log("[Acer-PO3-640][Debug] Loaded");
+
         }
 
         public void Close()
         {
             if (failed == true) return;
             logger.Log("[Acer-PO3-640][Debug] Shutting Down");
+            Shutdown();
         }
 
-        public void Update()
-        {
-            if (failed == true) return;
-        }
     }
 }
