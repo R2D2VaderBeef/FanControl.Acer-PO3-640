@@ -20,15 +20,15 @@ Contains the source code from [Soberia/EmbeddedController](https://github.com/So
 The initial release of the plugin is hardcoded to my machine, and will expect yours to be exactly like mine.
 
 ### Motherboard
-Unless you motherboard is exactly the Predator PO3-640, you **risk overwriting important information** in the Embedded Controller and causing system instability if you run this plugin. 
+Unless you motherboard is exactly the Predator PO3-640, it's likely that this plugin won't be able to control your fans. You also risk **overwriting random information** in the Embedded Controller. 
 
 Check your motherboard model with the following command:
 ```
 wmic baseboard get product
 ```
-I don't know whether there is any further specialisation in name between models. You can confirm whether your motherboard is compatible with my build by completing the first section [of the adaptation guide](/OTHERSYSTEMS.md#finding-the-ec-registers), especially if it's a slightly different model of the Acer Predator Orion 3000. 
+You can confirm whether your motherboard is compatible with my build of the plugin by completing the first section [of the adaptation guide](/OTHERSYSTEMS.md#finding-the-ec-registers) - check this especially if you have a slightly different model of the Acer Predator Orion 3000. Let me know if it ends up working so I can add your motherboard to the README!
 
-If you have a different motherboard / Acer Predator tower (or even a completely different machine), you may wish to [adapt the plugin for it](/OTHERSYSTEMS.md).
+If you have an incompatible Acer Predator tower, or even a completely different machine, you may wish to [adapt the plugin for it](/OTHERSYSTEMS.md).
 
 ### Fans
 Unless you have the same fan setup as I do (or one similar RPMs at any rate), this plugin will likely run them inefficiently or at limited speeds. 

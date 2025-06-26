@@ -21,7 +21,7 @@ These are the correct EC registers on my machine:
 | Front Case  | 0xF2         | 0x16         |
 | Back Case   | 0xF6         | 0x1A         |
 
-If your registers are the same as mine, your motherboard is compatible with my build of the plugin. You should still continue with the second step if your fans aren't similar to mine.
+If your registers are the same as mine, your motherboard is compatible with my build of the plugin. If your motherboard / PC model is not already listed in the README, please open an issue on GitHub to let me know! You should still continue with the second step if your fans aren't similar to mine.
 
 ## 2. Finding the minimum and maximum speed
 
