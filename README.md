@@ -26,7 +26,7 @@ Check your motherboard model with the following command:
 ```
 wmic baseboard get product
 ```
-You can confirm whether your motherboard is compatible with my build of the plugin by completing the first section [of the adaptation guide](/OTHERSYSTEMS.md#finding-the-ec-registers) - check this especially if you have a slightly different model of the Acer Predator Orion 3000. Let me know if it ends up working so I can add your motherboard to the README!
+You can confirm whether your motherboard is compatible with my build of the plugin by completing the first section [of the adaptation guide](/OTHERSYSTEMS.md#1-finding-the-ec-registers) - check this especially if you have a slightly different model of the Acer Predator Orion 3000. Let me know if it ends up working so I can add your motherboard to the README!
 
 If you have an incompatible Acer Predator tower, or even a completely different machine, you may wish to [adapt the plugin for it](/OTHERSYSTEMS.md).
 
