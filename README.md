@@ -53,7 +53,18 @@ Open the About tab in Fan Control. If it says NET 4.8 you'll need to download th
 > 
 > Configure PredatorSense to **run at startup** (as it does by default) and everything should work correctly. Re-enable the Predator Service if you've disabled it.
 >
-> You can leave the "Fan Control" tab on the Auto or Custom setting, it shouldn't matter. The Gaming setting overrides this plugin to set the fans to their maximum speed.
+> You can leave its "Fan Control" tab on the Auto or Custom setting, it shouldn't matter. The Gaming setting overrides this plugin to set the fans to their maximum speed.
+
+## Troubleshooting
+
+### Is PredatorSense configured to launch at startup? 
+If not, the plugin may not work. See the section above.
+
+### Is Smart Fan (or another automatic fan control setting) enabled in the BIOS?
+I have this disabled. While this should only change what happens before PredatorSense launches, try disabling it if you are running into issues. It is located under Advanced -> PC Health Status.
+
+### Something else?
+Open an issue and I'll try to help you solve your problem. Or enlist your local C# expert to look at my noob quality code. Or install Visual Studio, fork this repository and mess around till your problem is fixed, then submit your fix as a PR!
 
 ## Building from source
 The project contains three programs:
