@@ -31,10 +31,10 @@ You can confirm whether your motherboard is compatible with my build of the plug
 If you have an incompatible Acer Predator tower, or even a completely different machine, you may wish to [adapt the plugin for it](/OTHERSYSTEMS.md).
 
 ### Fans
-Unless you have the same fan setup as I do (or one similar RPMs at any rate), this plugin will likely run them inefficiently or at limited speeds. 
+Unless you have the same fans as I do (or ones with similar RPM ranges), this plugin will likely run them inefficiently or at limited speeds. 
 
 My fans are:
-- CPU Fan: Noctua NF-A9 (rated 400-2000 rpm, tested 500-2000)
+- CPU Fan: Noctua NF-A9, the one that comes with the popular Noctua NH-U9S cooler (rated 400-2000 rpm, tested 500-2000)
 - Front Case Fan: Stock (tested 600-3400 rpm)
 - Back Case Fan: Stock (tested 800-3400 rpm)
 
@@ -47,6 +47,13 @@ If you have a different fan setup, you may wish to [adapt the plugin for it](/CU
 Open the About tab in Fan Control. If it says NET 4.8 you'll need to download the .NET 8.0 version from [the official repo](https://github.com/Rem0o/FanControl.Releases/releases/latest). 
 - Download the FanControl.Acer-PO3-640.zip file from [the latest release](/releases/latest).
 - In Fan Control, go to Settings -> Plugins -> Install Plugin and select the downloaded .zip file.
+
+> [!IMPORTANT]
+> **You need to open PredatorSense** before this plugin will work. I've obviously missed some initialisation step it does.
+> 
+> Configure PredatorSense to **run at startup** (as it does by default) and everything should work correctly. Re-enable the Predator Service if you've disabled it.
+>
+> You can leave the "Fan Control" tab on the Auto or Custom setting, it shouldn't matter. The Gaming setting overrides this plugin to set the fans to their maximum speed.
 
 ## Building from source
 The project contains three programs:
