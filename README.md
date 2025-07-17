@@ -40,7 +40,7 @@ My fans are:
 
 (The lowest steady speed I found on each stock fan was different.)
 
-If you have a different fan setup, you may wish to [adapt the plugin for it](/CUSTOM.md).
+If you have a different fan setup, you may wish to [adapt the plugin for it](/OTHERSYSTEMS.md).
 
 ### Still want to install?
 - Ensure you have the .NET 8.0 (or greater) version of Fan Control installed. 
