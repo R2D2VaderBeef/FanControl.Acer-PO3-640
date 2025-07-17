@@ -38,7 +38,7 @@ private FanSpeedSensor[] speedSensors =
     new FanSpeedSensor("acer-po3-640-back-speed", "Back Case Fan Speed", 0x1A)
 };
 ```
-You'll have to change further logic in the FanSpeedSensor.cs file (and potentially in ECLibrary.dll) if your EC uses bytes instead of words and/or if you want to convert arbitrary values into the true RPM. 
+You may need to change further logic in the FanSpeedSensor.cs file if, for example, you need to convert arbitrary values into the true RPM. If your EC uses bytes instead of words, you'll also need to make a custom build of [ECLibrary](ECLibrary/).dll (sorry!) - check out the dllmain.cpp file and the docs for [Soberia/EmbeddedController](https://github.com/Soberia/EmbeddedController). 
 
 Defining only the Speed Sensors (and clearing my existing Control Sensors from the array below), building the plugin and installing it in Fan Control may be useful. Create the folder `Plugins\Acer-PO3-640` within your Fan Control installation, and copy your new FanControl.Acer-PO3-640.dll file there along with the provided (or your modified) ECLibrary.dll and WinRing0x64.dll files. You can then view the live value of the Actual Speed registers on the Home tab by clicking "View options" towards the top right and unchecking "Hide fan speed cards" if it is checked.
 
@@ -50,7 +50,7 @@ TestApp.exe set front 2500 // assuming you have set up the correct register addr
 ```
 Until the value of the Actual Speed register stops increasing / decreasing, or you reach the high / low RPM limit from the fan's data sheet. View the Actual Speed in Fan Control or by querying the correct register with ec-probe. 
 ```cs
-ec-probe.exe read 0xF2
+ec-probe.exe read 0x16
 ```
 Record the final values you **set the Target Speed register to** before the fan reaches its maximum and minimum speeds - these are the values you'll need.
 
