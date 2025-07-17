@@ -42,7 +42,7 @@ You may need to change further logic in the FanSpeedSensor.cs file if, for examp
 
 Defining only the Speed Sensors (and clearing my existing Control Sensors from the array below), building the plugin and installing it in Fan Control may be useful. Create the folder `Plugins\Acer-PO3-640` within your Fan Control installation, and copy your new FanControl.Acer-PO3-640.dll file there along with the provided (or your modified) ECLibrary.dll and WinRing0x64.dll files. You can then view the live value of the Actual Speed registers on the Home tab by clicking "View options" towards the top right and unchecking "Hide fan speed cards" if it is checked.
 
-To find the maximum and minimum speeds, use the ec-probe tool or a custom build of my TestApp program to set increasingly high (and later low) values to the Target Speed register(s): 
+To find the maximum and minimum speeds, use the ec-probe tool or a custom build of my [TestApp](TestApp/) program to set increasingly high (and later low) values to the Target Speed register(s): 
 ```cs
 ec-probe.exe write 0xF2 2500 
 // Or...
@@ -78,4 +78,4 @@ private FanControlSensor[] ctrlSensors =
     new FanControlSensor("acer-po3-640-back-control", "Back Case Fan", 0xF6, 800, 3400)
 };
 ```
-After changing any logic in the FanControlSensor.cs file relating to the size of the data on the EC or transforming the values at all, build the plugin and copy the FanControl.Acer-PO3-640.dll file 
+After changing any logic in the FanControlSensor.cs file relating to the size of the data on the EC or transforming the values at all, build the plugin and copy the FanControl.Acer-PO3-640.dll file to the FanControl plugin folder.
