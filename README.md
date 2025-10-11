@@ -8,7 +8,7 @@ Contains the source code from [Soberia/EmbeddedController](https://github.com/So
 > [!WARNING]
 > This plugin uses the extremely powerful and potentially exploitable WinRing0x64 driver, which may be flagged by Windows Defender. 
 >
-> Fan Control also uses this driver via [LibreHardwareMonitorLib](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor). Use both Fan Control and my own plugin at your own risk. Also see the Fan Control issue [here](https://github.com/Rem0o/FanControl.Releases/issues/3016). 
+> Fan Control used to use this driver via [LibreHardwareMonitorLib](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor), which has now switched to another driver called PawnIO. If I have a chance, I'll try to switch this plugin over - otherwise, use it at your own risk
 > 
 > Acer's own PredatorSense also has this driver in its program files, but I don't know if it actually uses it. 
 > 
