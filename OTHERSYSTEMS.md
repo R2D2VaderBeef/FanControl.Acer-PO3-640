@@ -1,14 +1,19 @@
-# Adapting the plugin for other systems
-I believe that this plugin could be adapted to support any Acer Predator desktop, or any other machine which controls the fans through the motherboard's Embedded Controller (EC), including the many laptops supported by [NoteBook FanControl](https://github.com/hirschmann/nbfc). 
+# Configuring the plugin for other systems
+This plugin reads from a config file located at `<your FanControl installation>\Plugins\Acer-PO3-640\config.toml` after installation.
 
-The initial release of the plugin is hardcoded to the config for my machine, meaning to enable a custom config you'll need to build your own version of FanControl.Acer-PO3-640.dll - the C# .NET project contained within the [AcerPlugin](AcerPlugin/) directory. Notes on building from source are [in the README](/README.md#building-from-source). I may add config file loading in the future.
+The plugin should be configurable to support other Acer Predator desktops and many other machines which control the fans through the motherboard's Embedded Controller (EC), including many laptops supported by [NoteBook FanControl](https://github.com/hirschmann/nbfc), given that they have the following properties:
+- They store fan speeds as 16-bit words (across two bytes), big endian
+- They store a value for target/set and actual/reported speed
+- At least the actual/reported speed value is stored as RPM
 
-My version may support other Acer Predator Orion 3000 desktops out-of-the-box, but you must confirm this first using the first step detailed below.
+My default configuration may support other Acer Predator Orion 3000 desktops out-of-the-box, but you must confirm this first using the first step detailed below.
+
+If you have a Predator PO3-640 with different fans to me, complete the second step below (or use the speeds provided by the manufacturer) to ensure the plugin uses the correct speed range for your fans.
 
 ## 1. Finding the EC registers
 You're looking for the EC registers which set each fan's Target Speed (which we want to write to), and those which report back on its Actual Speed (which we want to read from). To do this, use NoteBook FanControl's [ec-probe tool](https://github.com/hirschmann/nbfc/wiki/EC-probing-tool), or another tool of your choice. In future, I may make a tool of my own to make this easier. 
 
-Download and install NoteBook FanControl from [the latest release](https://github.com/hirschmann/nbfc/wiki/EC-probing-tool). Open the install location (default `C:\Program Files (x86)\NoteBook FanControl`) in your terminal. 
+Download and install NoteBook FanControl from [the latest release](https://github.com/hirschmann/nbfc/releases/tag/1.6.3). Open the install location (default `C:\Program Files (x86)\NoteBook FanControl`) in your terminal. 
 
 Follow the steps detailed [in their guide](https://github.com/hirschmann/nbfc/wiki/Probe-the-EC%27s-registers) to find the correct registers. You're looking for registers which change in value at the same time as your fan speed goes up or down. A basic OEM tool which can manually change your fan speed e.g. PredatorSense will make it easier to find the correct registers. It may be tricky to spot the registers containing Actual Speed, as they may change subtly while the fan is at a seemingly steady speed - a tool like PredatorSense or HWMonitor which can display the current fan speed will be useful to compare the values with.
 
@@ -21,34 +26,32 @@ These are the correct EC registers on my machine:
 | Front Case  | 0xF2         | 0x16         |
 | Back Case   | 0xF6         | 0x1A         |
 
-If your registers are the same as mine, your motherboard is compatible with my build of the plugin. If your motherboard / PC model is not already listed in the README, please open an issue on GitHub to let me know! You should still continue with the second step if your fans aren't similar to mine.
+If your registers are the same as mine, your motherboard is compatible with the default configuration of the plugin. If your motherboard / PC model is not already listed in the README, please open an issue on GitHub to let me know! You should still continue with the second step if your fans aren't similar to mine.
+
+If your registers are different to mine, you'll need to edit the config file (located at `<your FanControl installation>\Plugins\Acer-PO3-640\config.toml` after installation). Edit the ID/name of the existing fans as necessary, then set the `read` property to the Actual Speed register address you found, and the `write` property to the Target Speed register address you found. Here is my CPU fan configured with the values from above:
+```toml
+[[fan]]
+id = "cpu"             # A unique ID
+name = "CPU Fan"       # The name which will appear in Fan Control
+read = 0x14            # EC register address for the first byte of the actual / reported speed
+write = 0xF0           # EC register address for the first byte of the target / set speed
+#min = ???             
+#max = ???             
+```
+You can freely add new fans or remove ones you don't need, provided that each fan begins with `[[fan]]` and includes all of the properties. We will find the correct values for `min` and `max` next.
 
 ## 2. Finding the minimum and maximum speed
+As the Predator PO3-640 stores RPM values (rather than percentage or some other value) to its EC registers, that is what we will discuss here, though in principle you could use any arbitrary minimum/maximum values you discover. 
 
-Now you have enough information to add Speed Sensors to the AcerPlugin.cs file. 
-```cs
-private FanSpeedSensor[] speedSensors =
-{                      
-    new FanSpeedSensor( string id, // Give it a unique ID
-                        string name, // Give it a name
-                        byte readAddress // The Actual Speed address from above
-                      ),
-    new FanSpeedSensor("acer-po3-640-cpu-speed", "CPU Fan Speed", 0x14),
-    new FanSpeedSensor("acer-po3-640-front-speed", "Front Case Fan Speed", 0x16),
-    new FanSpeedSensor("acer-po3-640-back-speed", "Back Case Fan Speed", 0x1A)
-};
-```
-You may need to change further logic in the FanSpeedSensor.cs file if, for example, you need to convert arbitrary values into the true RPM. If your EC uses bytes instead of words, you'll also need to make a custom build of [ECLibrary](ECLibrary/).dll (sorry!) - check out the dllmain.cpp file and the docs for [Soberia/EmbeddedController](https://github.com/Soberia/EmbeddedController). 
+The easiest way to do this is to use the speeds provided by the manufacturer and call it a day.
 
-Defining only the Speed Sensors (and clearing my existing Control Sensors from the array below), building the plugin and installing it in Fan Control may be useful. Create the folder `Plugins\Acer-PO3-640` within your Fan Control installation, and copy your new FanControl.Acer-PO3-640.dll file there along with the provided (or your modified) ECLibrary.dll and WinRing0x64.dll files. You can then view the live value of the Actual Speed registers on the Home tab by clicking "View options" towards the top right and unchecking "Hide fan speed cards" if it is checked.
+To find the 'true' maximum and minimum speeds, you can use the ec-probe tool again. If you skipped the first step above, you'll need to install [NoteBook FanControl](https://github.com/hirschmann/nbfc/releases/tag/1.6.3), then open the install location (default `C:\Program Files (x86)\NoteBook FanControl`) in your terminal. 
 
-To find the maximum and minimum speeds, use the ec-probe tool or a custom build of my [TestApp](TestApp/) program to set increasingly high (and later low) values to the Target Speed register(s): 
+Use ec-probe to to set increasingly high (and later low) values to the Target Speed register(s): 
 ```cs
 ec-probe.exe write 0xF2 2500 
-// Or...
-TestApp.exe set front 2500 // assuming you have set up the correct register addresses in the switch statement in Program.cs in your build
 ```
-Until the value of the Actual Speed register stops increasing / decreasing, or you reach the high / low RPM limit from the fan's data sheet. View the Actual Speed in Fan Control or by querying the correct register with ec-probe. 
+Until the value of the Actual Speed register stops increasing / decreasing, or you reach the high / low RPM limit from the fan's data sheet. View the Actual Speed by querying the correct register with ec-probe. 
 ```cs
 ec-probe.exe read 0x16
 ```
@@ -63,19 +66,13 @@ My expanded data table, with the maximum and minimum values of Target Speed base
 | Front Case  | 0xF2         | 0x16         | 600           | 3400          |
 | Back Case   | 0xF6         | 0x1A         | 800           | 3400          |
 
-Once you have this information, you can complete your configuration by adding Control Sensors to the AcerPlugin.cs file: 
-```cs
-private FanControlSensor[] ctrlSensors =
-{
-    new FanControlSensor( string id, // Give it a unique ID
-                          string name, // Give it a name
-                          byte writeAddress, // The Target Speed address from above
-                          int minSpeed, // The Minimum Value from above
-                          int maxSpeed // The Maximum Value from above
-                        )
-    new FanControlSensor("acer-po3-640-cpu-control", "CPU Fan", 0xF0, 500, 2000),
-    new FanControlSensor("acer-po3-640-front-control", "Front Case Fan", 0xF2, 600, 3400),
-    new FanControlSensor("acer-po3-640-back-control", "Back Case Fan", 0xF6, 800, 3400)
-};
+Once you have this information, you can complete your configuration by editing the `min` and `max` values in the config file (located at `<your FanControl installation>\Plugins\Acer-PO3-640\config.toml` after installation) to match the Minimum and Maximum values you found. Here is the complete configuration for my CPU fan based on the data above:   
+```toml
+[[fan]]
+id = "cpu"             # A unique ID
+name = "CPU Fan"       # The name which will appear in Fan Control
+read = 0x14            # EC register address for the first byte of the actual / reported speed
+write = 0xF0           # EC register address for the first byte of the target / set speed
+min = 500              # The minimum speed, in RPM, the fan will spin at
+max = 2000             # The maximum speed, in RPM, the fan will spin at
 ```
-After changing any logic in the FanControlSensor.cs file relating to the size of the data on the EC or transforming the values at all, build the plugin and copy the FanControl.Acer-PO3-640.dll file to the FanControl plugin folder.

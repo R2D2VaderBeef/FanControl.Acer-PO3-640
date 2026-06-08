@@ -1,0 +1,28 @@
+# Descriptive comments for each field are present on the definition for the first fan
+
+# Fan 1: Noctua NF-A9
+[[fan]]
+id = "cpu"             # A unique ID
+name = "CPU Fan"       # The name which will appear in Fan Control
+read = 0x14            # EC register address for the first byte of the actual / reported speed
+write = 0xF0           # EC register address for the first byte of the target / set speed
+min = 500              # The minimum speed, in RPM, the fan will spin at
+max = 2000             # The maximum speed, in RPM, the fan will spin at
+
+# Fan 2: Stock PO3-640 Acer FrostBlade
+[[fan]]
+id = "front"
+name = "Front Case Fan"
+read = 0x16
+write = 0xF2
+min = 600
+max = 3400
+
+# Fan 3: Stock PO3-640 Acer FrostBlade, but didn't spin as slow as the other one in testing
+[[fan]]
+id = "back"
+name = "Back Case Fan"
+read = 0x1A
+write = 0xF6
+min = 800
+max = 3400

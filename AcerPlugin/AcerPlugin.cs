@@ -19,19 +19,6 @@ namespace FanControl.Acer_PO3_640
         private readonly IPluginLogger logger;
         private bool failed = false;
 
-        private FanSpeedSensor[] speedSensors =
-        {
-            new FanSpeedSensor("acer-po3-640-cpu-speed", "CPU Fan Speed", 0x14),
-            new FanSpeedSensor("acer-po3-640-front-speed", "Front Case Fan Speed", 0x16),
-            new FanSpeedSensor("acer-po3-640-back-speed", "Back Case Fan Speed", 0x1A)
-        };
-        private FanControlSensor[] ctrlSensors =
-        {
-            new FanControlSensor("acer-po3-640-cpu-control", "CPU Fan", 0xF0, 500, 2000),
-            new FanControlSensor("acer-po3-640-front-control", "Front Case Fan", 0xF2, 600, 3400),
-            new FanControlSensor("acer-po3-640-back-control", "Back Case Fan", 0xF6, 800, 3400)
-        };
-
         public AcerPlugin(IPluginLogger logger, IPluginDialog dialog)
         {
             this.logger = logger;
@@ -60,11 +47,15 @@ namespace FanControl.Acer_PO3_640
         {
             if (failed == true) return;
 
+            var (success, speedSensors, ctrlSensors) = ConfigLoader.load(logger);
+            if (success == false) return;
+
+            logger.Log($"[Acer-PO3-640][Debug] Loaded config file: {speedSensors.Length} speed sensors, {ctrlSensors.Length} control sensors");
+
             container.FanSensors.AddRange(speedSensors);
             container.ControlSensors.AddRange(ctrlSensors);
 
-            logger.Log("[Acer-PO3-640][Debug] Loaded");
-
+            logger.Log("[Acer-PO3-640][Debug] Registered sensors with Fan Control");
         }
 
         public void Close()
