@@ -17,7 +17,7 @@ Contains the source code from [Soberia/EmbeddedController](https://github.com/So
 
 ## Configuration - read this first
 
-The default configuration will work on systems which match mine exactly. Otherwise, you will need to modify the config file (located at `<your FanControl installation>\Plugins\Acer-PO3-640\config.toml` after installation). 
+The default configuration will work on systems which match mine exactly. Otherwise, you will need to modify the config file (located at `<your Fan Control installation>\Plugins\Acer-PO3-640\config.toml` after installation). 
 
 In principle, you could configure this plugin for many other systems which use the EC for fan control (including many laptops), as described in the configuration guide [here](/OTHERSYSTEMS.md). However, I likely won't be able to support you for devices other than the Predator Orion 3000 desktops.
 
@@ -45,9 +45,9 @@ If you have a different fan setup, use the speeds provided by the manufacturer o
 
 - Ensure you have a .NET 8.0 (or greater) version of Fan Control installed. 
 Open the About tab in Fan Control. If it says NET 4.8 you'll need to download the .NET 10.0 version from [the official repo](https://github.com/Rem0o/FanControl.Releases/releases/latest). 
-- Download the FanControl.Acer-PO3-640.zip file from [the latest release](/releases/latest).
+- Download this plugin's latest .zip file from [the latest release](/releases/latest).
 - In Fan Control, go to Settings -> Plugins -> Install Plugin and select the downloaded .zip file.
-- Exit Fan Control, edit the `<your FanControl installation>\Plugins\Acer-PO3-640\config.toml` file as necessary, then relaunch it. Now you should be able to pair the relevant new Controls and Speed Sensors, and set your CPU/case fans to follow a curve.
+- Exit Fan Control, edit the `<your Fan Control installation>\Plugins\Acer-PO3-640\config.toml` file as necessary, then relaunch it. Now you should be able to pair the relevant new Controls and Speed Sensors, and set your CPU/case fans to follow a curve.
 
 > [!IMPORTANT]
 > **You need to open PredatorSense** before this plugin will work. I've obviously missed some initialisation step it does.
@@ -59,10 +59,22 @@ Open the About tab in Fan Control. If it says NET 4.8 you'll need to download th
 ## Troubleshooting
 
 ### Is PredatorSense configured to launch at startup? 
-If not, the plugin may not work. See the section above.
+If not, this plugin may not work. See the section above.
 
 ### Is Smart Fan (or another automatic fan control setting) enabled in the BIOS?
 I have this disabled. While this should only change what happens before PredatorSense launches, try disabling it if you are running into issues. It is located under Advanced -> PC Health Status.
+ 
+### Are some/all of the new fans missing from Fan Control?
+Your configuration may be invalid. Open `<your Fan Control installation>\log.txt` and look for lines starting with `[Acer-PO3-640]` to help diagnose the issue. The number of valid sensors read from the config file (or a fatal error) should be logged at every startup like this:
+```
+[Acer-PO3-640][Debug] Loaded config file: 3 speed sensors, 3 control sensors
+```
+
+If you see a line like the following:
+```
+[Acer-PO3-640][Warning] Fan 2 in your config.toml file is invalid, so will not appear in Fan Control.
+```
+You are missing one of the required properties in the relevant fan (counted from the top of the config file), or the property isn't correctly formatted (it is a string when it should be a number or vice versa / it's surrounded in quotes when it shouldn't be or vice versa).
 
 ### Something else?
 Open an issue and I'll try to help you solve your problem. Or enlist your local C# expert to look at my noob quality code. Or install Visual Studio, fork this repository and mess around till your problem is fixed, then submit your fix as a PR!

@@ -1,5 +1,5 @@
 # Configuring the plugin for other systems
-This plugin reads from a config file located at `<your FanControl installation>\Plugins\Acer-PO3-640\config.toml` after installation.
+This plugin reads from a config file located at `<your Fan Control installation>\Plugins\Acer-PO3-640\config.toml` after installation.
 
 The plugin should be configurable to support other Acer Predator desktops and many other machines which control the fans through the motherboard's Embedded Controller (EC), including many laptops supported by [NoteBook FanControl](https://github.com/hirschmann/nbfc), given that they have the following properties:
 - They store fan speeds as 16-bit words (across two bytes), big endian
@@ -28,7 +28,7 @@ These are the correct EC registers on my machine:
 
 If your registers are the same as mine, your motherboard is compatible with the default configuration of the plugin. If your motherboard / PC model is not already listed in the README, please open an issue on GitHub to let me know! You should still continue with the second step if your fans aren't similar to mine.
 
-If your registers are different to mine, you'll need to edit the config file (located at `<your FanControl installation>\Plugins\Acer-PO3-640\config.toml` after installation). Edit the ID/name of the existing fans as necessary, then set the `read` property to the Actual Speed register address you found, and the `write` property to the Target Speed register address you found. Here is my CPU fan configured with the values from above:
+If your registers are different to mine, you'll need to edit the config file (located at `<your Fan Control installation>\Plugins\Acer-PO3-640\config.toml` after installation). Edit the ID/name of the existing fans as necessary, then set the `read` property to the Actual Speed register address you found, and the `write` property to the Target Speed register address you found. Here is my CPU fan configured with the values from above:
 ```toml
 [[fan]]
 id = "cpu"             # A unique ID
@@ -38,7 +38,7 @@ write = 0xF0           # EC register address for the first byte of the target / 
 #min = ???             
 #max = ???             
 ```
-You can freely add new fans or remove ones you don't need, provided that each fan begins with `[[fan]]` and includes all of the properties. We will find the correct values for `min` and `max` next.
+You can freely add new fans or remove ones you don't need, provided that each fan begins with `[[fan]]` and includes all of the properties. Next, we will find the correct values for `min` and `max`.
 
 ## 2. Finding the minimum and maximum speed
 As the Predator PO3-640 stores RPM values (rather than percentage or some other value) to its EC registers, that is what we will discuss here, though in principle you could use any arbitrary minimum/maximum values you discover. 
@@ -66,7 +66,7 @@ My expanded data table, with the maximum and minimum values of Target Speed base
 | Front Case  | 0xF2         | 0x16         | 600           | 3400          |
 | Back Case   | 0xF6         | 0x1A         | 800           | 3400          |
 
-Once you have this information, you can complete your configuration by editing the `min` and `max` values in the config file (located at `<your FanControl installation>\Plugins\Acer-PO3-640\config.toml` after installation) to match the Minimum and Maximum values you found. Here is the complete configuration for my CPU fan based on the data above:   
+Once you have this information, you can complete your configuration by editing the `min` and `max` values in the config file (located at `<your Fan Control installation>\Plugins\Acer-PO3-640\config.toml` after installation) to match the Minimum and Maximum values you found. Here is the complete configuration for my CPU fan based on the data above:   
 ```toml
 [[fan]]
 id = "cpu"             # A unique ID
