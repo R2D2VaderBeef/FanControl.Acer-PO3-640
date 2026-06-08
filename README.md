@@ -50,16 +50,14 @@ Open the About tab in Fan Control. If it says NET 4.8 you'll need to download th
 - Exit Fan Control, edit the `<your Fan Control installation>\Plugins\Acer-PO3-640\config.toml` file as necessary, then relaunch it. Now you should be able to pair the relevant new Controls and Speed Sensors, and set your CPU/case fans to follow a curve.
 
 > [!IMPORTANT]
-> **You need to open PredatorSense** before this plugin will work. I've obviously missed some initialisation step it does.
-> 
-> Configure PredatorSense to **run at startup** (as it does by default) and everything should work correctly. Re-enable the Predator Service if you've disabled it.
+> **You need to enable the Predator Service** for this plugin to work, so make sure to re-enable it if you've disabled it. I've obviously missed some initialisation step it does.
 >
-> You can leave its "Fan Control" tab on the Auto or Custom setting, it shouldn't matter. The Gaming setting overrides this plugin to set the fans to their maximum speed.
+> You can leave the "Fan Control" tab in PredatorSense on the Auto or Custom setting, it shouldn't matter. The Gaming setting overrides this plugin to set the fans to their maximum speed.
 
 ## Troubleshooting
 
-### Is PredatorSense configured to launch at startup? 
-If not, this plugin may not work. See the section above.
+### Is the Predator Service enabled? 
+If not, this plugin will not work. See the section above.
 
 ### Is Smart Fan (or another automatic fan control setting) enabled in the BIOS?
 I have this disabled. While this should only change what happens before PredatorSense launches, try disabling it if you are running into issues. It is located under Advanced -> PC Health Status.
